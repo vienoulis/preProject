@@ -1,22 +1,23 @@
-<%@ page import="model.User" %>
 <%@ page import="service.UserService" %>
-<%@ page import="com.google.gson.Gson" %><%--
+<%@ page import="com.google.gson.Gson" %>
+<%@ page import="model.User" %><%--
   Created by IntelliJ IDEA.
   User: Рома
   Date: 02.04.2020
-  Time: 1:44
+  Time: 15:12
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Users</title>
+    <title>Delete</title>
 </head>
 <body>
+<h1> Delete </h1>
 <table style=" width: 100%; border: 4px double black;">
     <tr>
         <td style="border: 1px solid black; text-align: center">
-            <a href="/create"> Create </a>
+            <a href="/users"> Create </a>
         </td>
         <td style="border: 1px solid black; text-align: center">
             <a href="/read"> Read</a>
@@ -39,14 +40,12 @@
     <p>
         Passport: <input type="number" name="passport">
     </p>
-    <p><input type="submit" value="Add"></p>
+    <p><input type="submit" value="Delete"></p>
 </form>
 <% for (User user : new UserService().getAllUsers()) { %>
 <p>
     <%= new Gson().toJson(user)%>
 </p>
 <% } %>
-
-<%="Hello World!"%>
 </body>
 </html>
