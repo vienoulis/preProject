@@ -8,6 +8,9 @@ public class User {
     private int age;
     private long passport;
 
+    public User() {
+    }
+
     public User(String name, int age, long passport) {
         this.name = name;
         this.age = age;
