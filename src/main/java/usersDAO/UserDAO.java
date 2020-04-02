@@ -122,4 +122,14 @@ public class UserDAO {
         statement.close();
         return result;
     }
+
+    public void delete(User user) throws SQLException {
+        String delete = "delete from users where name = ? and age = ? and  passport = ?";
+        PreparedStatement statement = connection.prepareStatement(delete);
+        statement.setString(1, user.getName());
+        statement.setInt(2, user.getAge());
+        statement.setLong(3, user.getPassport());
+        statement.executeUpdate();
+        statement.close();
+    }
 }

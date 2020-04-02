@@ -1,5 +1,6 @@
 package service;
 
+import com.google.gson.Gson;
 import model.User;
 import usersDAO.UserDAO;
 
@@ -92,6 +93,22 @@ public class UserService {
             }
         } catch (SQLException e) {
             result = "Update Exception";
+        }
+        return result;
+    }
+
+    public String delete(String name, String age, String passport) {
+        String result = "Delete false";
+        try {
+            if (name != null && age != null && passport != null) {
+                User user = new User(name, Integer.parseInt(age), Long.parseLong(passport));
+                if (getAllUsers().contains(user)) {
+                    getUserDAO().delete(user);
+                    return new Gson().toJson(user) + "was deleted!";
+                }
+            }
+        } catch (SQLException e ){
+            return "Delete exception";
         }
         return result;
     }
