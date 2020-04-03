@@ -2,7 +2,7 @@ package service;
 
 import com.google.gson.Gson;
 import model.User;
-import usersDAO.UserDAO;
+import usersDAO.UserJdbcDAO;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -44,8 +44,8 @@ public class UserService {
         }
     }
 
-    private static UserDAO getUserDAO() {
-        return new UserDAO(getMysqlConnection());
+    private static UserJdbcDAO getUserDAO() {
+        return new UserJdbcDAO(getMysqlConnection());
     }
 
     public void addUser(String name, String age, String passport) {
