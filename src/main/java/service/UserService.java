@@ -13,9 +13,10 @@ import java.util.List;
 
 public class UserService {
 
+    private UserDAO userDAO = getUserDAO();
     public List<User> getAllUsers() {
         try {
-            return getUserDAO().getAllUsers();
+            return userDAO.getAllUsers();
         } catch (SQLException e) {
             return null;
         }
@@ -54,29 +55,11 @@ public class UserService {
                 passport == null ? 0 : Long.parseLong(passport));
         try {
             if (!getAllUsers().contains(user)) {
-                getUserDAO().addUser(user);
+                userDAO.addUser(user);
             }
         } catch (SQLException e) {
 
         }
-    }
-
-    public List<User> getAllSortUsers(String name, String age, String passprt) {
-        List<User> users = new ArrayList<>();
-        try {
-            if (name != null) {
-                users = getUserDAO().getAllSortUsers(name);
-            }
-            if (age != null) {
-                users = getUserDAO().getAllSortUsers(Integer.parseInt(age));
-            }
-            if (passprt != null) {
-                users = getUserDAO().getAllSortUsers(Long.parseLong(passprt));
-            }
-        } catch (SQLException e) {
-            return users;
-        }
-        return users;
     }
 
     public String update(String name, String age, String passport, String newPassport, String newAge) {
@@ -84,10 +67,10 @@ public class UserService {
         try {
             if (name != null && age != null && passport != null && (newPassport == null || newAge == null)) {
                 if (newPassport != null) {
-                    result = getUserDAO().update(Integer.parseInt(age), name,
+                    result = userDAO.update(Integer.parseInt(age), name,
                             Long.parseLong(passport), Long.parseLong(newPassport));
                 } else {
-                    result = getUserDAO().update(name, Integer.parseInt(age),
+                    result = userDAO.update(name, Integer.parseInt(age),
                             Long.parseLong(passport), Integer.parseInt(newAge));
                 }
             }
@@ -103,7 +86,7 @@ public class UserService {
             if (name != null && age != null && passport != null) {
                 User user = new User(name, Integer.parseInt(age), Long.parseLong(passport));
                 if (getAllUsers().contains(user)) {
-                    getUserDAO().delete(user);
+                    userDAO.delete(user);
                     return new Gson().toJson(user) + "was deleted!";
                 }
             }
