@@ -17,14 +17,15 @@ public class UserDAO {
     public List<User> getAllUsers() throws SQLException {
         createTable();
         List<User> users = new ArrayList<>();
-        ResultSet set = connection.createStatement().executeQuery("select * from users");
+        Statement statement = connection.createStatement();
+        ResultSet set = statement.executeQuery("select * from users");
         while (set.next()) {
             users.add(new User(set.getLong("id"),
                     set.getString("name"),
                     set.getInt("age"),
                     set.getLong("passport")));
         }
-        connection.close();
+        statement.close();
         return users;
     }
 
@@ -36,99 +37,44 @@ public class UserDAO {
     }
 
     public void addUser(User user) throws SQLException {
+        createTable();
         String update = "INSERT INTO users(name, age, passport) value (?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(update);
+        String s = "asdadsas";
+        s = "adsadsad";
         statement.setString(1, user.getName());
         statement.setInt(2, user.getAge());
         statement.setLong(3, user.getPassport());
         statement.executeUpdate();
-        connection.close();
-    }
-
-    public List<User> getAllSortUsers(String name) throws SQLException {
-        List<User> users = new ArrayList<>();
-        Statement statement = connection.createStatement();
-        ResultSet set = statement.executeQuery("select * from users where name  = '" + name + "'");
-        while (set.next()) {
-            users.add(new User(set.getLong("id"),
-                    set.getString("name"),
-                    set.getInt("age"),
-                    set.getLong("passport")));
-        }
-        connection.close();
-        return users;
-    }
-
-    public List<User> getAllSortUsers(int parseInt) throws SQLException {
-        List<User> users = new ArrayList<>();
-        Statement statement = connection.createStatement();
-        ResultSet set = statement.executeQuery("select * from users where age = " + parseInt);
-        while (set.next()) {
-            users.add(new User(set.getLong("id"),
-                    set.getString("name"),
-                    set.getInt("age"),
-                    set.getLong("passport")));
-        }
-        connection.close();
-        return users;
-    }
-
-    public List<User> getAllSortUsers(long parseLong) throws SQLException {
-        List<User> users = new ArrayList<>();
-        Statement statement = connection.createStatement();
-        ResultSet set = statement.executeQuery("select * from users where passport = " + parseLong);
-        while (set.next()) {
-            users.add(new User(set.getLong("id"),
-                    set.getString("name"),
-                    set.getInt("age"),
-                    set.getLong("passport")));
-        }
-        connection.close();
-        return users;
-    }
-
-    public String update(int age, String name, long passport, long newPassport) throws SQLException {
-        String result;
-        String update = "update users set passport = ? where name like ? and  age like ? and passport like ?";
-        PreparedStatement statement = connection.prepareStatement(update);
-        statement.setLong(1, newPassport);
-        statement.setString(2, name);
-        statement.setInt(3, age);
-        statement.setLong(4, passport);
-
-        if (statement.executeUpdate() > 0) {
-            result = new Gson().toJson(new User(name, age, newPassport));
-        } else {
-            result = "This user was't found";
-        }
         statement.close();
-        return result;
     }
 
-    public String update(String name, int age, long passport, int newAge) throws SQLException {
-        String result;
-        String update = "update users set age = ? where name like ? and  age like ? and passport like ?";
-        PreparedStatement statement = connection.prepareStatement(update);
-        statement.setInt(1, newAge);
-        statement.setString(2, name);
-        statement.setInt(3, age);
-        statement.setLong(4, passport);
-
-        if (statement.executeUpdate() > 0) {
-            result = new Gson().toJson(new User(name, newAge, passport));
-        } else {
-            result = "This user was't found";
-        }
+    public void delete(int userId) throws SQLException {
+        Statement statement = connection.createStatement();
+        statement.executeUpdate("delete from users where id like " + userId);
         statement.close();
-        return result;
     }
 
-    public void delete(User user) throws SQLException {
-        String delete = "delete from users where name = ? and age = ? and  passport = ?";
-        PreparedStatement statement = connection.prepareStatement(delete);
-        statement.setString(1, user.getName());
-        statement.setInt(2, user.getAge());
-        statement.setLong(3, user.getPassport());
+    public User getUserById(Long id) throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet set = statement.executeQuery("select * from users where id like " + id);
+        User user = new User();
+        while (set.next()) {
+            user.setName(set.getString("name"));
+            user.setAge(set.getInt("age"));
+            user.setPassport(set.getLong("passport"));
+        }
+        return user;
+    }
+
+    public void update(long userId, String name, String age, String passport) throws SQLException {
+        String update = "update users set name  = ?, age = ?, passport = ? where id like ?";
+        User user = getUserById(userId);
+        PreparedStatement statement = connection.prepareStatement(update);
+        statement.setString(1, name == null ? user.getName() : name);
+        statement.setInt(2, age == null ? user.getAge() : Integer.parseInt(age));
+        statement.setLong(3, passport == null ? user.getPassport() : Long.parseLong(passport));
+        statement.setLong(4, userId);
         statement.executeUpdate();
         statement.close();
     }

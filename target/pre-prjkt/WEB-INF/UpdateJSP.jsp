@@ -1,10 +1,9 @@
-<%@ page import="com.google.gson.Gson" %>
-<%@ page import="model.User" %>
-<%@ page import="service.UserService" %><%--
+<%@ page import="service.UserService" %>
+<%@ page import="model.User" %><%--
   Created by IntelliJ IDEA.
   User: Рома
-  Date: 02.04.2020
-  Time: 15:18
+  Date: 04.04.2020
+  Time: 1:40
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,42 +13,20 @@
 </head>
 <body>
 <h1>Update</h1>
-<table style=" width: 100%; border: 4px double black;">
-    <tr>
-        <td style="border: 1px solid black; text-align: center">
-            <a href="/users"> Create </a>
-        </td>
-        <td style="border: 1px solid black; text-align: center">
-            <a href="/read"> Read</a>
-        </td>
-        <td style="border: 1px solid black; text-align: center">
-            <a href="/update"> Update </a>
-        </td>
-        <td style="border: 1px solid black; text-align: center">
-            <a href="/delete"> Delete</a>
-        </td>
-    </tr>
-</table>
 <form method="post">
-    Update user where name: <input type="text" name="name">
-    age: <input type="number" name="age">
-    passport: <input type="number" name="passport">
-    new passport <input type="number" name="newPassport">
-    <input type="submit" value="Update">
+    <p>
+        <% User user = new UserService().getUserById(Long.parseLong(response.getHeader("userId")));%>
+        <input type="hidden" name="userId" value="<%=response.getHeader("userId")%>">
+        Name: <input type="text" value="<%= user.getName()%>" name="nameToUpdate">
+    </p>
+    <p>
+        Age: <input type="number" value="<%=user.getAge()%>" name="ageToUpdate">
+    </p>
+    <p>
+        Passport: <input type="number" value="<%=user.getPassport()%>" name="passportToUpdate">
+    </p>
+    <p><input type="submit" name="doUpdate" value="Update"></p>
 </form>
-<form method="post">
-    Update user where name: <input type="text" name="name">
-    age: <input type="number" name="age">
-    passport: <input type="number" name="passport">
-    new age <input type="number" name="newAge">
-    <input type="submit" value="Update">
-</form>
-<% for (User user : new UserService().getAllUsers()) { %>
-<p>
-    <%= new Gson().toJson(user)%>
-</p>
-<% } %>
-
 
 </body>
 </html>
