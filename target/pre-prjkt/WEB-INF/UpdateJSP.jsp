@@ -25,7 +25,10 @@
     <p>
         Passport: <input type="number" value="<%=user.getPassport()%>" name="passportToUpdate">
     </p>
-    <p><input type="submit" name="doUpdate" value="Update"></p>
+
+    <p>
+        <input type="submit" name="doUpdate" value="Update">
+    </p>
 </form>
 
 </body>

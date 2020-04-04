@@ -1,7 +1,10 @@
 package service;
 
 import model.User;
-import usersDAO.UserDAO;
+import usersDAO.DBHelper;
+import usersDAO.UserDao;
+import usersDAO.UserHibernateDAO;
+import usersDAO.UserJdbcDAO;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -12,14 +15,12 @@ import java.util.List;
 
 public class UserService {
 
-<<<<<<< Updated upstream
-=======
-    private UserDAO userDAO = getUserDAO();
+    private UserDao userDao = getUserJDBCDAO();
+//    private UserDao userDao = new UserHibernateDAO(DBHelper.getSessionFactory());
 
->>>>>>> Stashed changes
     public List<User> getAllUsers() {
         try {
-            return getUserDAO().getAllUsers();
+            return userDao.getAllUsers();
         } catch (SQLException e) {
             return null;
         }
@@ -27,7 +28,7 @@ public class UserService {
 
     public User getUserById(long id) {
         try {
-            return userDAO.getUserById(id);
+            return userDao.getUserById(id);
         } catch (SQLException e) {
 
         }
@@ -57,59 +58,34 @@ public class UserService {
         }
     }
 
-    private static UserDAO getUserDAO() {
-        return new UserDAO(getMysqlConnection());
+    private UserJdbcDAO getUserJDBCDAO() {
+        if (userDao == null){
+            return new UserJdbcDAO(getMysqlConnection());
+        } else {
+            return (UserJdbcDAO) userDao;
+        }
+    }
+
+    private UserHibernateDAO getUserHibernateDAO() {
+        return new UserHibernateDAO(DBHelper.getSessionFactory());
     }
 
     public void addUser(String name, String age, String passport) {
         User user = new User(name,
                 age == null ? 0 : Integer.parseInt(age),
                 passport == null ? 0 : Long.parseLong(passport));
-        try {
-            if (!getAllUsers().contains(user)) {
-                getUserDAO().addUser(user);
+        if (!getAllUsers().contains(user)) {
+            try {
+                userDao.addUser(user);
+            } catch (SQLException e) {
+
             }
-        } catch (SQLException e) {
-            System.out.println("Exception");
         }
     }
 
-<<<<<<< Updated upstream
-    public List<User> getAllSortUsers(String name, String age, String passprt) {
-        List<User> users = new ArrayList<>();
-        try {
-            if (name != null) {
-                users = getUserDAO().getAllSortUsers(name);
-            }
-            if (age != null) {
-                users = getUserDAO().getAllSortUsers(Integer.parseInt(age));
-            }
-            if (passprt != null) {
-                users = getUserDAO().getAllSortUsers(Long.parseLong(passprt));
-            }
-        } catch (SQLException e) {
-            return users;
-        }
-        return users;
-    }
-
-    public String update(String name, String age, String passport, String newPassport, String newAge) {
-        String result = "Update false";
-        try {
-            if (name != null && age != null && passport != null && (newPassport == null || newAge == null)) {
-                if (newPassport != null) {
-                    result = getUserDAO().update(Integer.parseInt(age), name,
-                            Long.parseLong(passport), Long.parseLong(newPassport));
-                } else {
-                    result = getUserDAO().update(name, Integer.parseInt(age),
-                            Long.parseLong(passport), Integer.parseInt(newAge));
-                }
-            }
-=======
     public void delete(int userId) {
         try {
-            userDAO.delete(userId);
->>>>>>> Stashed changes
+            userDao.delete(userId);
         } catch (SQLException e) {
 
         }
@@ -117,21 +93,9 @@ public class UserService {
 
     public void update(long userId, String name, String age, String passport) {
         try {
-<<<<<<< Updated upstream
-            if (name != null && age != null && passport != null) {
-                User user = new User(name, Integer.parseInt(age), Long.parseLong(passport));
-                if (getAllUsers().contains(user)) {
-                    getUserDAO().delete(user);
-                    return new Gson().toJson(user) + "was deleted!";
-                }
-            }
-        } catch (SQLException e ){
-            return "Delete exception";
-=======
-            userDAO.update(userId, name, age, passport);
+            userDao.update(userId, name, age, passport);
         } catch (SQLException e) {
             e.printStackTrace();
->>>>>>> Stashed changes
         }
     }
 }
