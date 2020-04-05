@@ -1,25 +1,26 @@
 package usersDAO;
 
 import model.User;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 
 public class DBHelper {
-
-    private static SessionFactory sessionFactory;
-
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            sessionFactory = createSessionFactory();
+    private static DBHelper dbHelper;
+    private DBHelper(){
+    }
+    public static DBHelper getInstance(){
+        if (dbHelper == null){
+            return new DBHelper();
         }
-        return sessionFactory;
+        return dbHelper;
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    private static Configuration getMySqlConfiguration() {
+    public static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
 
@@ -33,12 +34,27 @@ public class DBHelper {
         return configuration;
     }
 
-    private static SessionFactory createSessionFactory() {
-        Configuration configuration = getMySqlConfiguration();
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-        builder.applySettings(configuration.getProperties());
-        ServiceRegistry serviceRegistry = builder.build();
-        return configuration.buildSessionFactory(serviceRegistry);
+    public static Connection getConnection() {
+        try {
+            DriverManager.registerDriver((Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
+            StringBuilder url = new StringBuilder();
+            url.
+                    append("jdbc:mysql://").        //db type
+                    append("localhost:").           //host name
+                    append("3306/").                //port
+                    append("db_example?").          //db name
+                    append("user=root&").          //login
+                    append("password=1234").
+                    append("&serverTimezone=UTC");       //password
+
+//            System.out.println("URL: " + url + "\n");
+            Connection connection = DriverManager.getConnection(url.toString());
+            return connection;
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {
+            e.printStackTrace();
+            System.out.printf(e.getMessage());
+            throw new IllegalStateException();
+        }
     }
 
 }

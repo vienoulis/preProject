@@ -26,7 +26,7 @@
     </p>
     <p><input type="submit" name="add" value="Create"></p>
 </form>
-<% for (User user : new UserService().getAllUsers()) { %>
+<% for (User user : UserService.getInstance().getAllUsers()) { %>
 <form method="post">
     <p>
         <input type="hidden" name="userId" value=<%=user.getId()%>>

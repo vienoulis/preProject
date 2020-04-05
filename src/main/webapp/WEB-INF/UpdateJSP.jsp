@@ -15,7 +15,7 @@
 <h1>Update</h1>
 <form method="post">
     <p>
-        <% User user = new UserService().getUserById(Long.parseLong(response.getHeader("userId")));%>
+        <% User user = UserService.getInstance().getUserById(Long.parseLong(response.getHeader("userId")));%>
         <input type="hidden" name="userId" value="<%=response.getHeader("userId")%>">
         Name: <input type="text" value="<%= user.getName()%>" name="nameToUpdate">
     </p>

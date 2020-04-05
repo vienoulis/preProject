@@ -1,19 +1,27 @@
 package usersDAO;
 
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.service.ServiceRegistry;
 import model.User;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-
 import java.util.List;
 
 public class UserHibernateDAO implements UserDao {
+    private static final Configuration configuration = DBHelper.getConfiguration();
+    private static final SessionFactory sessionFactory = createSessionFactory();
 
-    private SessionFactory sessionFactory;
+    public UserHibernateDAO() {
+    }
 
-    public UserHibernateDAO(SessionFactory session) {
-        this.sessionFactory = session;
+    private static SessionFactory createSessionFactory() {
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        builder.applySettings( configuration.getProperties());
+        ServiceRegistry serviceRegistry = builder.build();
+        return configuration.buildSessionFactory(serviceRegistry);
     }
 
     @Override
@@ -55,14 +63,14 @@ public class UserHibernateDAO implements UserDao {
 
     @Override
     public void update(long userId, String name, String age, String passport) {
-        try (Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-             Query q = session.createQuery("update User set name = :nm, age = :ag, passport = :p where  id = :i");
-                    q.setParameter("nm", name);
-                    q.setParameter("ag", Integer.parseInt(age));
-                    q.setParameter("p", Long.parseLong(passport));
-                    q.setParameter("i", userId);
-                    q.executeUpdate();
+            Query q = session.createQuery("update User set name = :nm, age = :ag, passport = :p where  id = :i");
+            q.setParameter("nm", name);
+            q.setParameter("ag", Integer.parseInt(age));
+            q.setParameter("p", Long.parseLong(passport));
+            q.setParameter("i", userId);
+            q.executeUpdate();
             transaction.commit();
         }
     }

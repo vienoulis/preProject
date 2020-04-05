@@ -14,30 +14,25 @@ import java.io.IOException;
 @WebServlet(name = "UsersServlet", value = "/users")
 public class UsersServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String add = request.getParameter("add");
-        String delete = request.getParameter("delete");
-        String update = request.getParameter("update");
-        String doUpdate = request.getParameter("doUpdate");
-        String count = request.getParameter("userId");
-        if (add != null) {
-            new UserService().addUser(request.getParameter("name"),
+        if (request.getParameter("add") != null) {
+            UserService.getInstance().addUser(request.getParameter("name"),
                     request.getParameter("age"),
                     request.getParameter("passport"));
             getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
             response.setStatus(HttpServletResponse.SC_OK);
         }
-        if (delete != null) {
-            new UserService().delete(Integer.parseInt(request.getParameter("userId")));
+        if (request.getParameter("delete") != null) {
+            UserService.getInstance().delete(Integer.parseInt(request.getParameter("userId")));
             getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
             response.setStatus(HttpServletResponse.SC_OK);
         }
-        if (update != null) {
+        if (request.getParameter("update") != null) {
             response.setHeader("userId", request.getParameter("userId"));
             getServletContext().getRequestDispatcher("/WEB-INF/UpdateJSP.jsp").forward(request, response);
             response.setStatus(HttpServletResponse.SC_OK);
         }
-        if (doUpdate != null) {
-            new UserService().update(Long.parseLong(request.getParameter("userId")),
+        if (request.getParameter("doUpdate") != null) {
+            UserService.getInstance().update(Long.parseLong(request.getParameter("userId")),
                     request.getParameter("nameToUpdate"),
                     request.getParameter("ageToUpdate"),
                     request.getParameter("passportToUpdate"));
