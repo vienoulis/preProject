@@ -8,18 +8,19 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+
 import java.util.List;
 
 public class UserHibernateDAO implements UserDao {
-    private static final Configuration configuration = DBHelper.getConfiguration();
-    private static final SessionFactory sessionFactory = createSessionFactory();
+    private final Configuration configuration = DBHelper.getConfiguration();
+    private final SessionFactory sessionFactory = createSessionFactory();
 
     public UserHibernateDAO() {
     }
 
-    private static SessionFactory createSessionFactory() {
+    private SessionFactory createSessionFactory() {
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-        builder.applySettings( configuration.getProperties());
+        builder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
@@ -37,7 +38,9 @@ public class UserHibernateDAO implements UserDao {
     @Override
     public void addUser(User user) {
         Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
         session.save(user);
+        transaction.commit();
         session.close();
     }
 
