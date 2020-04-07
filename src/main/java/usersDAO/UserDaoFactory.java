@@ -14,7 +14,7 @@ public class UserDaoFactory {
             case "JdbcDAO":
                 return new UserJdbcDAO(DBHelper.getConnection());
             case "HibernateDAO":
-                return new UserHibernateDAO();
+                return new UserHibernateDAO(DBHelper.createSessionFactory());
             default:
                 throw new RuntimeException("Неизвестная реализация");
 

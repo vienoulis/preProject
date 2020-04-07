@@ -1,13 +1,5 @@
-<%@ page import="model.User" %>
-<%@ page import="service.UserService" %>
-<%@ page import="com.google.gson.Gson" %><%--
-  Created by IntelliJ IDEA.
-  User: Рома
-  Date: 02.04.2020
-  Time: 1:44
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
     <title>Users</title>
@@ -26,15 +18,15 @@
     </p>
     <p><input type="submit" name="add" value="Create"></p>
 </form>
-<% for (User user : UserService.getInstance().getAllUsers()) { %>
-<form method="post">
-    <p>
-        <input type="hidden" name="userId" value=<%=user.getId()%>>
-        <%= new Gson().toJson(user)%>
-        <input type="submit" name="delete" value="Delete">
-        <input type="submit" name="update" value="Update">
-    </p>
-</form>
-<% } %>
+
+<c:forEach items="${userList}" var='user'>
+    <form method="post">
+        <p>
+            <c:out value="${user}"/>
+            <input formaction="/delete" type="submit" name="delete" value="Delete">
+            <input formaction="/update" formmethod="get" type="submit" name="update" value="Update">
+        </p>
+    </form>
+</c:forEach>
 </body>
 </html>

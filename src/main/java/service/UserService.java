@@ -1,5 +1,6 @@
 package service;
 
+import com.google.gson.Gson;
 import model.User;
 import servlet.UsersServlet;
 import sun.usagetracker.UsageTrackerClient;
@@ -11,6 +12,7 @@ import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
@@ -19,11 +21,21 @@ public class UserService {
 
     private UserService() throws IOException {
     }
+
     public static UserService getInstance() throws IOException {
-        if (userService == null){
+        if (userService == null) {
             return new UserService();
         }
         return userService;
+    }
+
+    public List<String> getAllUsersToGSON() {
+        List<String> strings = new ArrayList<>();
+        Gson gson = new Gson();
+        for (User user : getAllUsers()) {
+            strings.add(gson.toJson(user));
+        }
+        return strings;
     }
 
     public List<User> getAllUsers() {
@@ -45,8 +57,8 @@ public class UserService {
 
     public void addUser(String name, String age, String passport) {
         User user = new User(name,
-                age == null ? 0 : Integer.parseInt(age),
-                passport == null ? 0 : Long.parseLong(passport));
+                age.length() == 0 ? 0 : Integer.parseInt(age),
+                passport.length() == 0 ? 0 : Long.parseLong(passport));
         if (!getAllUsers().contains(user)) {
             try {
                 userDao.addUser(user);

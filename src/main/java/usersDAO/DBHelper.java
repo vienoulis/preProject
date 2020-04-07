@@ -1,7 +1,11 @@
 package usersDAO;
 
 import model.User;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -20,7 +24,7 @@ public class DBHelper {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    public static Configuration getConfiguration() {
+    private static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
 
@@ -32,6 +36,13 @@ public class DBHelper {
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "update");
         return configuration;
+    }
+    public static SessionFactory createSessionFactory() {
+        Configuration configuration = getConfiguration();
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        builder.applySettings(configuration.getProperties());
+        ServiceRegistry serviceRegistry = builder.build();
+        return configuration.buildSessionFactory(serviceRegistry);
     }
 
     public static Connection getConnection() {
@@ -47,7 +58,6 @@ public class DBHelper {
                     append("password=1234").
                     append("&serverTimezone=UTC");       //password
 
-//            System.out.println("URL: " + url + "\n");
             Connection connection = DriverManager.getConnection(url.toString());
             return connection;
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | SQLException e) {

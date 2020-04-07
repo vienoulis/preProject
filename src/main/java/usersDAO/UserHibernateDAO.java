@@ -12,17 +12,10 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class UserHibernateDAO implements UserDao {
-    private final Configuration configuration = DBHelper.getConfiguration();
-    private final SessionFactory sessionFactory = createSessionFactory();
+    private SessionFactory sessionFactory;
 
-    public UserHibernateDAO() {
-    }
-
-    private SessionFactory createSessionFactory() {
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-        builder.applySettings(configuration.getProperties());
-        ServiceRegistry serviceRegistry = builder.build();
-        return configuration.buildSessionFactory(serviceRegistry);
+    public UserHibernateDAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
