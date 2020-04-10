@@ -14,5 +14,5 @@ public interface UserDao {
 
     User getUserById(Long id) throws SQLException;
 
-    void update(long userId, String name, String age, String passport) throws SQLException;
+    void update(long userId, String name, String age, String passport, String password, String role) throws SQLException;
 }

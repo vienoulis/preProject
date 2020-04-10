@@ -22,9 +22,11 @@ public class UpdateServlet extends HttpServlet {
         UserService.getInstance().update(Long.parseLong(request.getParameter("userId")),
                 request.getParameter("nameToUpdate"),
                 request.getParameter("ageToUpdate"),
-                request.getParameter("passportToUpdate"));
+                request.getParameter("passportToUpdate"),
+                request.getParameter("passwordToUpdate"),
+                request.getParameter("roleToUpdate"));
         request.setAttribute("test", UserService.getInstance().getAllUsers());
-        getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
         response.setStatus(HttpServletResponse.SC_OK);
 
     }

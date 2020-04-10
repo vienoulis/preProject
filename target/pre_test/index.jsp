@@ -1,33 +1,24 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--
+  Created by IntelliJ IDEA.
+  User: Рома
+  Date: 10.04.2020
+  Time: 3:53
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title>Users</title>
+    <title>Title</title>
 </head>
 <body>
-<h1>Users</h1>
 <form method="post">
     <p>
         Name: <input type="text" name="name">
     </p>
     <p>
-        Age: <input type="number" name="age">
+        Pass: <input type="password" name="password">
     </p>
-    <p>
-        Passport: <input type="number" name="passport">
-    </p>
-    <p><input type="submit" name="add" value="Create"></p>
+    <input type="submit" value="LogIn">
 </form>
-<c:forEach items="${test}" var='user'>
-    <form method="post">
-        <p>
-            <input type="hidden" value="${user.id}" name="userId">
-            <c:out value="${user.toGson()}"/>
-            <input formaction="/delete" type="submit" name="delete" value="Delete">
-            <input formaction="/update" formmethod="get" type="submit" name="update" value="Update">
-        </p>
-    </form>
-</c:forEach>
 </body>
 </html>

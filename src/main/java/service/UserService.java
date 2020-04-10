@@ -2,14 +2,9 @@ package service;
 
 import com.google.gson.Gson;
 import model.User;
-import servlet.UsersServlet;
-import sun.usagetracker.UsageTrackerClient;
 import usersDAO.*;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
@@ -55,10 +50,12 @@ public class UserService {
         return new User();
     }
 
-    public void addUser(String name, String age, String passport) {
+    public void addUser(String name, String age, String passport, String password, String role) {
         User user = new User(name,
                 age.length() == 0 ? 0 : Integer.parseInt(age),
-                passport.length() == 0 ? 0 : Long.parseLong(passport));
+                passport.length() == 0 ? 0 : Long.parseLong(passport),
+                password.length() == 0 ? "1234" : password,
+                role == null ? "user" : "admin");
         if (!getAllUsers().contains(user)) {
             try {
                 userDao.addUser(user);
@@ -67,6 +64,7 @@ public class UserService {
             }
         }
     }
+    // исправить др мтоды.
 
     public void delete(int userId) {
         try {
@@ -76,9 +74,10 @@ public class UserService {
         }
     }
 
-    public void update(long userId, String name, String age, String passport) {
+    public void update(long userId, String name, String age, String passport, String password, String role) {
         try {
-            userDao.update(userId, name, age, passport);
+            role = role == null ? "user" : "admin";
+            userDao.update(userId, name, age, passport, password, role);
         } catch (SQLException e) {
             e.printStackTrace();
         }

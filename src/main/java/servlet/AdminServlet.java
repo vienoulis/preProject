@@ -13,20 +13,23 @@
     import java.util.List;
 
 
-    @WebServlet(name = "UsersServlet", value = "/")
-    public class UsersServlet extends HttpServlet {
+    @WebServlet(name = "AdminServlet", value = "/admin")
+    public class AdminServlet extends HttpServlet {
         protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
             UserService.getInstance().addUser(request.getParameter("name"),
                     request.getParameter("age"),
-                    request.getParameter("passport"));
+                    request.getParameter("passport"),
+                    request.getParameter("password"),
+                    request.getParameter("role"));
             request.setAttribute("test", UserService.getInstance().getAllUsers());
             response.setStatus(HttpServletResponse.SC_OK);
-            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
         }
 
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             request.setAttribute("test", UserService.getInstance().getAllUsers());
             response.setStatus(HttpServletResponse.SC_OK);
-            getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
+            getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
         }
     }

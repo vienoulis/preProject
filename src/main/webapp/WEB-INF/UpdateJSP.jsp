@@ -26,6 +26,12 @@
     <p>
         Passport: <input type="number" value="${userUpdated.passport}" name="passportToUpdate">
     </p>
+    <p>
+        Password: <input type="text" name="passwordToUpdate">
+    </p>
+    <p>
+        Role: <input type="checkbox"  name="roleToUpdate"> admin
+    </p>
 
     <p>
         <input type="submit" name="doUpdate" value="Update">

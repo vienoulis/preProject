@@ -13,11 +13,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "age")
     private int age;
+    @Column(name = "role")
+    private String role;
 
     @Column(name = "passport")
     private long passport;
@@ -25,16 +30,20 @@ public class User {
     public User() {
     }
 
-    public User(String name, int age, long passport) {
+    public User(String name, int age, long passport, String password, String role) {
         this.name = name;
         this.age = age;
         this.passport = passport;
+        this.password = password;
+        this.role = role;
     }
-    public User(long id, String name, int age, long passport) {
+    public User(long id, String name, int age, long passport, String password, String role) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.passport = passport;
+        this.password = password;
+        this.role = role;
     }
 
     public long getId() {
@@ -51,6 +60,22 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public int getAge() {
@@ -81,6 +106,7 @@ public class User {
     public String toGson(){
         return new Gson().toJson(this);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,11 +114,13 @@ public class User {
         User user = (User) o;
         return age == user.age &&
                 passport == user.passport &&
-                Objects.equals(name, user.name);
+                Objects.equals(name, user.name) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(role, user.role);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, age, passport);
+        return Objects.hash(name, password, age, role, passport);
     }
 }

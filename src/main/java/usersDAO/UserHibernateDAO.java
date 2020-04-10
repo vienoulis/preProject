@@ -1,5 +1,6 @@
 package usersDAO;
 
+import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.ServiceRegistry;
@@ -9,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class UserHibernateDAO implements UserDao {
@@ -20,51 +22,56 @@ public class UserHibernateDAO implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        List<User> users = session.createQuery("From User").list();
-        transaction.commit();
-        session.close();
-        return users;
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            List<User> users = session.createQuery("From User").list();
+            transaction.commit();
+            return users;
+        }
     }
 
     @Override
     public void addUser(User user) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        session.save(user);
-        transaction.commit();
-        session.close();
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.save(user);
+            transaction.commit();
+        }
     }
 
     @Override
     public void delete(long userId) {
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
-        session.createQuery("delete  from User where id = :id")
-                .setParameter("id", userId)
-                .executeUpdate();
-        transaction.commit();
-        session.close();
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+            session.createQuery("delete  from User where id = :id")
+                    .setParameter("id", userId)
+                    .executeUpdate();
+            transaction.commit();
+        }
+
     }
 
     @Override
     public User getUserById(Long id) {
-        Session session = sessionFactory.openSession();
-        User user = (User) session.createQuery("from User where id = :id")
-                .setParameter("id", id).uniqueResult();
-        session.close();
-        return user;
+        try (Session session = sessionFactory.openSession()) {
+            User user = (User) session.createQuery("from User where id = :id")
+                    .setParameter("id", id).uniqueResult();
+            session.close();
+            return user;
+        }
+
     }
 
     @Override
-    public void update(long userId, String name, String age, String passport) {
+    public void update(long userId, String name, String age, String passport, String password, String role) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            Query q = session.createQuery("update User set name = :nm, age = :ag, passport = :p where  id = :i");
+            Query q = session.createQuery("update User set name = :nm, age = :ag, passport = :pp, password = :pw, role = :rl where  id = :i");
             q.setParameter("nm", name);
             q.setParameter("ag", Integer.parseInt(age));
-            q.setParameter("p", Long.parseLong(passport));
+            q.setParameter("pp", Long.parseLong(passport));
+            q.setParameter("pw", password);
+            q.setParameter("rl", role);
             q.setParameter("i", userId);
             q.executeUpdate();
             transaction.commit();
