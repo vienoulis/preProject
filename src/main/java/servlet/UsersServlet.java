@@ -13,7 +13,7 @@
     import java.util.List;
 
 
-    @WebServlet(name = "UsersServlet", value = "/")
+    @WebServlet(name = "UsersServlet", value = "/users")
     public class UsersServlet extends HttpServlet {
         protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             UserService.getInstance().addUser(request.getParameter("name"),

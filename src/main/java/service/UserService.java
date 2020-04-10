@@ -1,18 +1,12 @@
 package service;
 
-import com.google.gson.Gson;
+
 import model.User;
-import servlet.UsersServlet;
-import sun.usagetracker.UsageTrackerClient;
-import usersDAO.*;
+import usersDAO.UserDao;
+import usersDAO.UserDaoFactory;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
@@ -27,15 +21,6 @@ public class UserService {
             return new UserService();
         }
         return userService;
-    }
-
-    public List<String> getAllUsersToGSON() {
-        List<String> strings = new ArrayList<>();
-        Gson gson = new Gson();
-        for (User user : getAllUsers()) {
-            strings.add(gson.toJson(user));
-        }
-        return strings;
     }
 
     public List<User> getAllUsers() {

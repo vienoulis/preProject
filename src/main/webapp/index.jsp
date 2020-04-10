@@ -7,7 +7,7 @@
 </head>
 <body>
 <h1>Users</h1>
-<form method="post">
+<form method="post" action="/users">
     <p>
         Name: <input type="text" name="name">
     </p>
