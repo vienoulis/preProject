@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
 <html>
 <head>
     <title>Users</title>
@@ -18,11 +19,11 @@
     </p>
     <p><input type="submit" name="add" value="Create"></p>
 </form>
-
-<c:forEach items="${userList}" var='user'>
+<c:forEach items="${test}" var='user'>
     <form method="post">
         <p>
-            <c:out value="${user}"/>
+            <input type="hidden" value="${user.id}" name="userId">
+            <c:out value="${user.toGson()}"/>
             <input formaction="/delete" type="submit" name="delete" value="Delete">
             <input formaction="/update" formmethod="get" type="submit" name="update" value="Update">
         </p>

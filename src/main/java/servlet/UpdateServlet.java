@@ -12,8 +12,8 @@ import java.io.IOException;
 @WebServlet(name = "UpdateServlet", value = "/update")
 public class UpdateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setHeader("userId", request.getParameter("userId"));
-        request.setAttribute("usersList", UserService.getInstance().getAllUsers());
+        request.setAttribute("userUpdated",
+                UserService.getInstance().getUserById(Long.parseLong(request.getParameter("userId"))) );
         getServletContext().getRequestDispatcher("/WEB-INF/UpdateJSP.jsp").forward(request, response);
         response.setStatus(HttpServletResponse.SC_OK);
     }
@@ -23,6 +23,7 @@ public class UpdateServlet extends HttpServlet {
                 request.getParameter("nameToUpdate"),
                 request.getParameter("ageToUpdate"),
                 request.getParameter("passportToUpdate"));
+        request.setAttribute("test", UserService.getInstance().getAllUsers());
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
         response.setStatus(HttpServletResponse.SC_OK);
 

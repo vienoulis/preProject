@@ -1,5 +1,7 @@
 package model;
 
+import com.google.gson.Gson;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -76,6 +78,9 @@ public class User {
                 '}';
     }
 
+    public String toGson(){
+        return new Gson().toJson(this);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

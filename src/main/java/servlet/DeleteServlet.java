@@ -13,6 +13,7 @@ import java.io.IOException;
 public class DeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserService.getInstance().delete(Integer.parseInt(request.getParameter("userId")));
+        request.setAttribute("test", UserService.getInstance().getAllUsers());
         getServletContext().getRequestDispatcher("/index.jsp").forward(request, response);
         response.setStatus(HttpServletResponse.SC_OK);
     }
