@@ -16,7 +16,6 @@
     @WebServlet(name = "AdminServlet", value = "/admin")
     public class AdminServlet extends HttpServlet {
         protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
             UserService.getInstance().addUser(request.getParameter("name"),
                     request.getParameter("age"),
                     request.getParameter("passport"),

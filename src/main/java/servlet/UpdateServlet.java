@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "UpdateServlet", value = "/update")
+@WebServlet(name = "UpdateServlet", value = "/admin/update")
 public class UpdateServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("userUpdated",
@@ -19,6 +19,7 @@ public class UpdateServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String s = request.getParameter("userId");
         UserService.getInstance().update(Long.parseLong(request.getParameter("userId")),
                 request.getParameter("nameToUpdate"),
                 request.getParameter("ageToUpdate"),

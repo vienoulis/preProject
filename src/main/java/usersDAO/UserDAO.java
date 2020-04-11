@@ -14,5 +14,9 @@ public interface UserDao {
 
     User getUserById(Long id) throws SQLException;
 
+    boolean isAdmin(String name) throws SQLException;
+
+    boolean authUser(String name, String password) throws SQLException;
+
     void update(long userId, String name, String age, String passport, String password, String role) throws SQLException;
 }

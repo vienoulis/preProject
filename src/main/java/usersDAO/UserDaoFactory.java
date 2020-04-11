@@ -9,7 +9,7 @@ public class UserDaoFactory {
     private Properties properties = new Properties();
 
     public UserDao getDAO() throws IOException {
-        properties.load(new FileReader("C:\\Java\\JavaMentorLessons\\Lessons\\preProject\\src\\main\\resources\\dao.properties"));
+        properties.load(new FileReader(getClass().getClassLoader().getResource("dao.properties").getFile()));
         switch (properties.getProperty("daotype")) {
             case "JdbcDAO":
                 return new UserJdbcDAO(DBHelper.getConnection());

@@ -1,6 +1,4 @@
-package servlet;
-
-import service.UserService;
+package usersDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,16 +7,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "deleteServlet", value = "/admin/delete")
-public class DeleteServlet extends HttpServlet {
+@WebServlet(name = "allServlet", value = "/")
+public class AllServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        UserService.getInstance().delete(Integer.parseInt(request.getParameter("userId")));
-        request.setAttribute("test", UserService.getInstance().getAllUsers());
-        getServletContext().getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
-        response.setStatus(HttpServletResponse.SC_OK);
+        request.getServletContext().getRequestDispatcher("/start").forward(request, response);
+
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getServletContext().getRequestDispatcher("/start").forward(request, response);
 
     }
 }

@@ -41,6 +41,24 @@ public class UserService {
         }
     }
 
+    public boolean isAdmin(String name) {
+        try {
+            return userDao.isAdmin(name);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean authUser(String name, String password) {
+        try {
+            return userDao.authUser(name, password);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
+
     public User getUserById(long id) {
         try {
             return userDao.getUserById(id);

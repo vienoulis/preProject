@@ -1,6 +1,7 @@
 package usersDAO;
 
 import model.User;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,13 +42,33 @@ public class UserJdbcDAO implements UserDao {
         stmt.close();
     }
 
+    private User getUserByName(String name) throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet set = statement.executeQuery("select * from users where name like " + name);
+        User user = new User();
+        while (set.next()) {
+            user.setName(set.getString("name"));
+            user.setAge(set.getInt("age"));
+            user.setPassport(set.getLong("passport"));
+        }
+        return user;
+    }
+
+    public boolean authUser(String name, String password) throws SQLException {
+        User user = getUserByName(name);
+        return name.equals(user.getName()) && password.equals(user.getPassword());
+    }
+
+    public boolean isAdmin(String name) throws SQLException {
+        User user = getUserByName(name);
+        return user.getRole().equals("admin");
+    }
+
     @Override
     public void addUser(User user) throws SQLException {
         createTable();
         String update = "INSERT INTO users(name, age, passport) value (?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(update);
-        String s = "asdadsas";
-        s = "adsadsad";
         statement.setString(1, user.getName());
         statement.setInt(2, user.getAge());
         statement.setLong(3, user.getPassport());

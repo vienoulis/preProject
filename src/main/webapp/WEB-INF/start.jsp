@@ -8,15 +8,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Auth</title>
 </head>
 <body>
-<form method="post">
+<form method="get" action="/admin">
     <p>
-        Name: <input type="text" name="name">
+        Name: <input type="text" name="authName">
     </p>
     <p>
-        Pass: <input type="password" name="password">
+        Pass: <input type="password" name="authPassword">
     </p>
     <input type="submit" value="LogIn">
 </form>
