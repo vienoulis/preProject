@@ -37,6 +37,7 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
     public User(long id, String name, int age, long passport, String password, String role) {
         this.id = id;
         this.name = name;
@@ -103,7 +104,7 @@ public class User {
                 '}';
     }
 
-    public String toGson(){
+    public String toGson() {
         return new Gson().toJson(this);
     }
 

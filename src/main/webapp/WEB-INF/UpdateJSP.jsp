@@ -1,4 +1,3 @@
-<%@ page import="model.User" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
@@ -17,19 +16,23 @@
 <h1>Update</h1>
 <form method="post" action="/admin/update">
     <table>
-    <tr>
-        <input type="hidden" name="userId" value="${userUpdated.id}">
-        <td>Name:</td> <td><input type="text" value="${userUpdated.name}" name="nameToUpdate"></td>
-    </tr>
-    <tr>/
-        <td>Age:</td> <td><input type="number" value="${userUpdated.age}" name="ageToUpdate"></td>
-    </tr>
-    <tr>
-        <td>Passport:</td> <td><input type="number" value="${userUpdated.passport}" name="passportToUpdate"></td>
-    </tr>
-    <tr>
-       <td> Password:</td> <td><input type="text" name="passwordToUpdate"></td>
-    </tr>
+        <tr>
+            <input type="hidden" name="userId" value="${userUpdated.id}">
+            <td>Name:</td>
+            <td><input type="text" value="${userUpdated.name}" name="nameToUpdate"></td>
+        </tr>
+        <tr>/
+            <td>Age:</td>
+            <td><input type="number" value="${userUpdated.age}" name="ageToUpdate"></td>
+        </tr>
+        <tr>
+            <td>Passport:</td>
+            <td><input type="number" value="${userUpdated.passport}" name="passportToUpdate"></td>
+        </tr>
+        <tr>
+            <td> Password:</td>
+            <td><input type="text" name="passwordToUpdate"></td>
+        </tr>
     </table>
     <p>
         Role: <input type="checkbox" name="roleToUpdate"> admin

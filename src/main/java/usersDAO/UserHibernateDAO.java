@@ -1,17 +1,11 @@
 package usersDAO;
 
-import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.service.ServiceRegistry;
 import model.User;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-import javax.jws.soap.SOAPBinding;
-import java.sql.SQLException;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
@@ -49,13 +43,15 @@ public class UserHibernateDAO implements UserDao {
             return user;
         }
     }
-    public boolean isAdmin(String name){
+
+    public boolean isAdmin(String name) {
         User user = getUserByName(name);
         return user.getRole().equals("admin");
     }
-    public boolean authUser(String name, String password){
+
+    public boolean authUser(String name, String password) {
         User user = getUserByName(name);
-        if (!nonNull(user)){
+        if (!nonNull(user)) {
             return false;
         }
         return name.equals(user.getName()) && password.equals(user.getPassword());
